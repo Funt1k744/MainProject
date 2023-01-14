@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Все книги</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="wrap">
+    <div id="header">
+        <div id="nav">
+            <ul id="links">
+                <li>
+                    <a>
+                        <form th:action="@{/admin}" th:method="GET">
+                            <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/mybook}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home}" th:method="GET">
+                            <input type="submit" value="Книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/profile}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/auth/login}" th:method="GET">
+                            <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+                        </form>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<body>
+
+<form th:action="@{/admin/books/new}" th:method="GET">
+    <input type="submit" value="Добавить новую книгу" >
+</form>
+
+<br/>
+
+<div th:each="book : ${books}">
+    <a th:href="@{/admin/books/{id}(id=${book.getBookId()})}"
+       th:text="${'Название: ' + book.getName()}">user</a>
+    <br/>
+    <a th:text="${'Автор: ' + book.getAuthor()}">user</a>
+    <br/>
+    <br/>
+</div>
+
+</body>
+</html>

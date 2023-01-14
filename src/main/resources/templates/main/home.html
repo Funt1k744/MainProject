@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="wrap">
+    <div id="header">
+        <div id="nav">
+            <ul id="links">
+                <li>
+                    <a>
+                        <form th:action="@{/admin}" th:method="GET">
+                            <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/mybook}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home}" th:method="GET">
+                            <input type="submit" value="Книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/profile}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/auth/login}" th:method="GET">
+                            <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+                        </form>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div style="clear: both;">
+    <ul class="products clearfix" th:each="book: ${books}">
+        <li class="product-wrapper">
+            <div href="" class="product">
+                <a th:href="@{/home/book/{id}(id=${book.getBookId()})}"
+                   th:text="${'Название: ' +book.getName()}">name</a>
+                <h5 th:text="${'Автор: ' +book.getAuthor()}">author</h5>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

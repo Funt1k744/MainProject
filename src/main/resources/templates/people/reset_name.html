@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Сброс Имя/Фамилия</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div id="nav">
+      <ul id="links">
+        <li>
+          <a>
+            <form th:action="@{/admin}" th:method="GET">
+              <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form th:action="@{/home/mybook}" th:method="GET">
+              <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form th:action="@{/home}" th:method="GET">
+              <input type="submit" value="Книги">
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form th:action="@{/home/profile}" th:method="GET">
+              <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+            </form>
+          </a>
+        </li>
+        <li>
+          <a>
+            <form th:action="@{/auth/login}" th:method="GET">
+              <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+            </form>
+            <form th:action="@{/logout}" th:method="POST">
+              <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+            </form>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<form th:method="PATCH" th:action="@{/home/profile/setting/resetname}" th:object="${person}">
+  <label for="name">Имя: </label>
+  <input type="text" th:field="*{name}" id="name">
+  <br/>
+  <label for="surname">Фамилия: </label>
+  <input type="text" th:field="*{surname}" id="surname">
+  <br/>
+  <input type="submit" value="Обновить"/>
+</form>
+
+</body>
+</html>

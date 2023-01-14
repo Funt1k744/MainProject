@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование книги</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="wrap">
+    <div id="header">
+        <div id="nav">
+            <ul id="links">
+                <li>
+                    <a>
+                        <form th:action="@{/admin}" th:method="GET">
+                            <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/mybook}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home}" th:method="GET">
+                            <input type="submit" value="Книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/profile}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/auth/login}" th:method="GET">
+                            <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+                        </form>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<body>
+
+<form th:method="PATCH" th:action="@{/admin/books/{id}(id=${book.getBookId()})}" th:object="${book}">
+    <label for="name">Имя: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="author">Автор: </label>
+    <input type="text" th:field="*{author}" id="author">
+    <br/>
+    <label for="releaseDate">Дата выпуска: </label>
+    <input type="date" th:field="*{releaseDate}" id="releaseDate">
+    <br/>
+    <label for="pages">Страниц: </label>
+    <input type="text" th:field="*{pages}" id="pages">
+    <br/>
+    <input type="submit" value="Обновить"/>
+</form>
+
+
+</body>
+</html>

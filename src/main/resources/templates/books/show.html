@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="wrap">
+    <div id="header">
+        <div id="nav">
+            <ul id="links">
+                <li>
+                    <a>
+                        <form th:action="@{/admin}" th:method="GET">
+                            <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/mybook}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home}" th:method="GET">
+                            <input type="submit" value="Книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/profile}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/auth/login}" th:method="GET">
+                            <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+                        </form>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<body>
+
+<p th:text="${'Id: ' +book.getBookId()}">VALUE</p>
+<p th:text="${'Название: ' +book.getName()}">VALUE</p>
+<p th:text="${'Автор: ' +book.getAuthor()}">VALUE</p>
+<p th:text="${'Дата релиза: ' +book.getReleaseDate()}">VALUE</p>
+<p th:text="${'Страниц: ' +book.getPages()}">VALUE</p>
+<p th:text="${'Людей брали: ' +book.getTook()}">VALUE</p>
+
+
+<tr th:if="${bookTakeTest}">
+    <a>Книга сейчас у:</a>
+    <div th:each="transaction : ${book.getTransactionList()}">
+        <a th:href="@{/admin/people/{id}(id=${transaction.getPerson().getPersonId()})}"
+           th:text="${'Имя Фамилия: ' +transaction.getPerson().getName() + ', ' + transaction.getPerson().getSurname()}">user</a>
+    </div>
+</tr>
+
+<tr th:unless="${bookTakeTest}">
+    <a>Книгу никто не взял.</a>
+</tr>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/admin/books/{id}/edit(id=${book.getBookId()})}">
+    <input type="submit" value="Редактировать"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/admin/books/{id}(id=${book.getBookId()})}">
+    <input type="submit" value="Удалить"/>
+</form>
+
+</body>
+</html>

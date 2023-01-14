@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Аутентификация</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="wrap">
+    <div id="header">
+        <div id="nav">
+            <ul id="links">
+                <li>
+                    <a>
+                        <form th:action="@{/admin}" th:method="GET">
+                            <input sec:authorize="hasRole('ROLE_ADMIN')" type="submit" value="Панель администратора">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/mybook}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Мои книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home}" th:method="GET">
+                            <input type="submit" value="Книги">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/home/profile}" th:method="GET">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Профиль">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form th:action="@{/auth/login}" th:method="GET">
+                            <input sec:authorize="isAnonymous()" type="submit" value="Войти">
+                        </form>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input sec:authorize="isAuthenticated()" type="submit" value="Выйти">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<body>
+
+<form jname="f" method="post" action="/process_login">
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <label for="username">Введите логин: </label>
+    <input type="text" name="username" id="username">
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" name="password" id="password">
+    <br/>
+    <input type="submit" value="Войти">
+
+</form>
+
+<br/>
+<form th:action="@{/auth/registration}" th:method="GET">
+    <input type="submit" value="Зарегистрироваться">
+</form>
+
+</body>
+</html>
